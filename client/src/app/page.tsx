@@ -3,11 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import HomeImage from '/public/images/home.png'
 import { ButtonComponent, Header } from "@/ui";
+import { cookies } from 'next/headers';
+
+export const revalidate = 0
 
 export default function Home() {
+  const userCookie = cookies().get('user');
+  const user = userCookie ? JSON.parse(userCookie.value) : null;
+
   return (
     <div>
-      <Header />
+      <Header user={user} />
       <div>
         <div className="relative w-full overflow-hidden">
           <div className="flex transition-transform ease-out duration-500">
@@ -27,7 +33,7 @@ export default function Home() {
           <h1 className="font-medium mb-4 text-[#004784] text-6xl text-start max-w-[868px]">Comenzá gestionar tus citas
             en un solo lugar.</h1>
           <p className="max-w-[380px] text-base text-start">Tu salud, nuestra prioridad. Simplifica la gestión de tus citas médicas con nuestra plataforma fácil de usar. Agenda, reprograma o cancela turnos en segundos y lleva el control de tus chequeos y resultados, todo en un solo lugar. </p>
-          <Link href={'/appointment'} className="mt-16 max-w-max">
+          <Link href={user ? '/appointment' : '/auth/login'} className="mt-16 max-w-max">
             <ButtonComponent size="big" variant="dark" text="Reservá un turno" />
           </Link>
         </div>

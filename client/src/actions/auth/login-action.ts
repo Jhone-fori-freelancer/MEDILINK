@@ -94,3 +94,8 @@ export const loginUser = async (formData: FormData) => {
     }
   }
 }
+
+export const logoutUser = async () => {
+  const cookieStore = await cookies()
+  cookieStore.delete('user')
+}

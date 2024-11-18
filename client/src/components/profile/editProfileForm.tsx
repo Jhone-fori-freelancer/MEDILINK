@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { schemaRegister } from "@/schemas";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { SubmitButton } from "@/ui";
@@ -11,8 +10,10 @@ import { PatientByIdFromResponse } from "@/interfaces/user";
 import { IconPencil } from "../icons";
 import { uploadSingleImage } from "@/actions/images/ImageActions";
 import { BackButton } from "../BackButton";
+import { schemaUpdateProfile } from "@/schemas";
+import { editPatient } from "@/actions/patients/patientActions";
 
-type TypeFormData = z.infer<typeof schemaRegister>;
+type TypeFormData = z.infer<typeof schemaUpdateProfile>;
 
 interface Props {
   data: PatientByIdFromResponse
@@ -20,8 +21,8 @@ interface Props {
 
 export function EditProfileForm({ data }: Props) {
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<TypeFormData>({
-    resolver: zodResolver(schemaRegister)
+  const { register, handleSubmit, formState: { errors } } = useForm<TypeFormData>({
+    resolver: zodResolver(schemaUpdateProfile)
   });
 
   const [success, setSuccess] = useState<string | undefined>("");
@@ -38,17 +39,17 @@ export function EditProfileForm({ data }: Props) {
     }
   }
 
-  const submit = handleSubmit(async (data) => {
-    console.log(data);
+  const submit = handleSubmit(async (patient) => {
+    console.log(patient);
 
     const formData = new FormData();
-    formData.append("name", data.name);
+    formData.append("name", patient.name);
     /*formData.append("surname", data.surname);*/
-    formData.append("phone", data.phone);
-    formData.append("email", data.email);
-    formData.append("dni", data.dni)
-    formData.append("insurer", data.obraSocial);
-    formData.append("img", profileImg);
+    formData.append("phone", patient.phone);
+    formData.append("email", patient.email);
+    formData.append("social_work", patient.social_work);
+    formData.append("number_associate", patient.number_associate);
+    formData.append("image", profileImg);
 
     setLoading(true);
     setError("");
@@ -57,17 +58,25 @@ export function EditProfileForm({ data }: Props) {
     try {
       /* crear action y hacer peticion a la api cuando esté */
       console.log(formData);
-      reset({
-        email: "",
-        password: "",
-        name: "",
-        phone: "",
-        obraSocial: "",
-        dni: "",
-      })
+      const response = await editPatient(formData, data)
+      console.log('response', response)
+
+      if (response.errors || response.updateError) {
+        setError(response.message + ': ' + response.updateError || 'Error desconocido al actualizar el doctor.')
+        setLoading(false)
+        return
+      }
+
+      if (response.success) {
+        setSuccess(response.success)
+        setLoading(false)
+      }
+
+      setSuccess("Perfil actualizado correctamente")
+      setLoading(false)
     } catch (error: unknown) {
       setLoading(false);
-      setError("Ha ocurrido un error al registrarse: " + error);
+      setError("Ha ocurrido un error al actualizar el perfil: " + error);
     }
   });
 
@@ -145,17 +154,17 @@ export function EditProfileForm({ data }: Props) {
 
       <div className="flex flex-wrap gap-4">
         <div className="w-[420px] flex flex-col gap-[10px] relative">
-          <label htmlFor="obraSocial">Obra Social</label>
-          <input type="text" id="obraSocial" {...register("obraSocial")} defaultValue={data.social_work} className="block mt-1 p-2 bg-[#F6F7F7] w-full rounded-xl h-12" />
+          <label htmlFor="social_work">Obra Social</label>
+          <input type="text" id="social_work" {...register("social_work")} defaultValue={data.social_work} className="block mt-1 p-2 bg-[#F6F7F7] w-full rounded-xl h-12" />
           <IconPencil className="absolute top-[46px] right-3" />
-          {errors.obraSocial && <p className="text-red-500">{errors.obraSocial.message}</p>}
+          {errors.social_work && <p className="text-red-500">{errors.social_work.message}</p>}
         </div>
 
         <div className="w-[420px] flex flex-col gap-[10px] relative">
-          <label htmlFor="numeroAsociado">Numero de asociado</label>
-          <input type="text" id="numeroAsociado" {...register("numeroAsociado")} defaultValue={data.number_associate} className="block mt-1 p-2 bg-[#F6F7F7] w-full rounded-xl h-12" />
+          <label htmlFor="number_associate">Numero de asociado</label>
+          <input type="text" id="number_associate" {...register("number_associate")} defaultValue={data.number_associate} className="block mt-1 p-2 bg-[#F6F7F7] w-full rounded-xl h-12" />
           <IconPencil className="absolute top-[46px] right-3" />
-          {errors.numeroAsociado && <p className="text-red-500">{errors.numeroAsociado.message}</p>}
+          {errors.number_associate && <p className="text-red-500">{errors.number_associate.message}</p>}
         </div>
       </div>
 

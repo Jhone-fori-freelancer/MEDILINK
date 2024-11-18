@@ -8,6 +8,7 @@ import { useState } from "react"
 import { SubmitButton } from "@/ui"
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/actions/auth/login-action"
+import Link from "next/link"
 
 type TypeFormData = z.infer<typeof schemaLogin>
 
@@ -89,6 +90,8 @@ export function LoginForm() {
 
             {success && <p className="text-xl text-emerald-500">{success}</p>}
             {error && <p className="text-xl text-red-600">{error}</p>}
+
+            <Link href={'/auth/register'} className="text-xl mt-4 ">¿No tienes una cuenta? <span className="text-blue-500 hover:text-blue-800 cursor-pointer select-none">Regístrate</span></Link>
         </form>
     )
 }

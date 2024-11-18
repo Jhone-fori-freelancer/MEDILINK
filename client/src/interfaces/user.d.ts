@@ -81,3 +81,10 @@ export interface PatientByIdFromResponse {
   social_work: string
   number_associate: string
 }
+export interface UpdatePatient {
+  social_work: string
+  number_associate: string
+  phone: string
+  insurer: string
+  image: string
+}

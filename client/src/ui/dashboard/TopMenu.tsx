@@ -1,17 +1,20 @@
-import { SvgHome, SvgNotifications } from "@/components";
+'use client'
+
+import { SvgNotifications } from "@/components";
 import { SvgPerfil } from "@/components/svg/svgs";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from '/public/logo_full.png'
 import { DoctorFromResponse } from "@/interfaces/user";
+import { logoutUser } from "@/actions/auth/login-action";
 
 export function TopMenu({ user }: { user: DoctorFromResponse }) {
-    const icons = [{ icon: <SvgPerfil />, title: "Mi perfil", url: '/profile/' + user.id }, { icon: <SvgHome />, title: "Inicio", url: '/dashboard' }, { icon: <SvgNotifications />, name: "notificación", url: '#' }]
+    const icons = [{ icon: <SvgPerfil />, title: "Mi perfil", url: '/profile/' + user.id }, { icon: <SvgNotifications />, name: "notificación", url: '#' }]
 
     return (
         <div className="py-8">
             <nav className="flex justify-between items-center px-20 mx-auto text-[#004784]">
-                <Link href={"/"} className="text-3xl font-semibold" >
+                <Link href={user ? "/dashboard" : "/"} className="text-3xl font-semibold" >
                     <Image src={Logo} alt="logo" width={250} height={50} />
                 </Link>
                 <div>
@@ -38,6 +41,14 @@ export function TopMenu({ user }: { user: DoctorFromResponse }) {
                                 </li>
                             ))
                         }
+
+                        <li >
+                            <Link
+                                className="border-2 border-[#004784] rounded-full px-6 py-2 font-semibold"
+                                href={"/"}
+                                onClick={async () => { await logoutUser() }}
+                            >Salir</Link>
+                        </li>
 
                     </ul>
                 </div>

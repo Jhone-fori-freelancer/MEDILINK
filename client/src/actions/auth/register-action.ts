@@ -1,10 +1,12 @@
 'use server'
 import { schemaRegister } from '@/schemas'
+import { cookies } from 'next/headers'
 
 const BASE_URL = process.env.API_URL
 
 export const createUser = async (formData: FormData) => {
   const url = BASE_URL + '/patients/create'
+  const cookieStore = cookies()
 
   const nameFromForm = formData.get('name') as string
   const emailFromForm = formData.get('email') as string
@@ -56,12 +58,22 @@ export const createUser = async (formData: FormData) => {
     })
 
     const responseData = await response.json()
+    console.log(responseData)
 
     if (!responseData) {
       return {
         errors: {},
         registerError: null,
         message: 'Algo salio mal...',
+      }
+    }
+
+    if (responseData.error === 'Data integrity violation') {
+      return {
+        errors: {},
+        registerError:
+          'El DNI, Email o Numero de asociado ya se encuentran registrados',
+        message: 'Error al registrarse',
       }
     }
 
@@ -72,6 +84,11 @@ export const createUser = async (formData: FormData) => {
         message: 'Error al registrarse',
       }
     }
+
+    cookieStore.set('user', JSON.stringify(responseData), {
+      httpOnly: true,
+      path: '/',
+    })
 
     return {
       success: 'Registro exitoso',
