@@ -1,9 +1,12 @@
+'use client'
+
 import { SvgCalendar, SvgNotifications, SvgPerfil } from '@/components'
 import Link from 'next/link'
 import React from 'react'
 import Logo from '/public/logo_full.png'
 import Image from 'next/image'
 import { DoctorFromResponse } from '@/interfaces/user'
+import { logoutUser } from "@/actions/auth/login-action";
 
 export function TopMenuDoctor({ user }: { user: DoctorFromResponse }) {
 
@@ -29,6 +32,13 @@ export function TopMenuDoctor({ user }: { user: DoctorFromResponse }) {
                                 </li>
                             ))
                         }
+                        <li >
+                            <Link
+                                className="border-2 border-[#004784] rounded-full px-6 py-2 font-semibold"
+                                href={"/"}
+                                onClick={async () => { await logoutUser() }}
+                            >Salir</Link>
+                        </li>
 
                     </ul>
                 </div>

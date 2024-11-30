@@ -29,15 +29,15 @@ export function PlaceCard({ id, name, address, img, details }: Props) {
           </div>
         </Link>
       ) : (
-        <Link href={`/clinic/${id}`} className="flex flex-col border-2 border-[#D9D9D9] rounded-[6px]">
+        <Link href={`/clinic/${id}`} className="min-h-[184px] h-[184px] min-w-[275px] w-[275px] flex flex-col rounded-t-[6px]">
           <>
             {img !== '' ? (
-              <Image src={img} height={120} width={275} alt={name + "image"} />
+              <Image src={img} height={120} width={275} alt={name + "image"} className="h-[120px] rounded-t object-cover" />
             ) : (
               <Image src={clinicImg} height={120} width={275} alt={"clinica imagen"} className="rounded-t" />
             )}
           </>
-          <div className="flex flex-col justify-center h-[89px] px-3">
+          <div className="flex flex-col justify-center h-[66px] px-3 border-b-2 border-x-2 border-[#D9D9D9] rounded-b-[6px]">
             <span className="text-xl">{name}</span>
             <span>{address}</span>
           </div>

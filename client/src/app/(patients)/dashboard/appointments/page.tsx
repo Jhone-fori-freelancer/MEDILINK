@@ -8,7 +8,7 @@ export const revalidate = 0
 
 export default async function DashboardAppointmentPage() {
   const userCookie = cookies().get('user');
-  const user = userCookie ? JSON.parse(userCookie.value) : {};
+  const user = userCookie ? JSON.parse(userCookie.value) : null;
 
   const waitList = await getWaitingList(user.id)
   console.log('waitList2', waitList);

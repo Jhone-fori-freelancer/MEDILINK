@@ -6,7 +6,7 @@ import { sendMail } from "@/actions/email/emailActions";
 
 export default async function CanceledAppointmentPage({ params }: { params: { id: string } }) {
   const userCookie = cookies().get('user');
-  const user = userCookie ? JSON.parse(userCookie.value) : {};
+  const user = userCookie ? JSON.parse(userCookie.value) : null;
 
   const appointmentId = params.id
 

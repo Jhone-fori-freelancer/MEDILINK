@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image"
-import specialtyImg from '/public/images/specialty.svg'
 import { IconCardiology, IconNeurology, IconPediatrics, IconSurgery, IconTraumatology } from "@/components/icons";
 
 interface Props {
@@ -24,10 +23,10 @@ const iconMap: { [key: string]: JSX.Element } = {
 };
 
 export function SpecialityCard({ name, img }: Props) {
-  const iconSrc = name && iconMap[name] ? iconMap[name] : specialtyImg;
+  const iconSrc = name && iconMap[name] ? iconMap[name] : '';
 
   return (
-    <Link href={`/specialty/${name}`} className="min-h-[184px] h-[184px] min-w-[275px] w-[275px] flex flex-col rounded-[6px]">
+    <Link href={`/specialty/${name}`} className="min-h-[184px] h-[184px] min-w-[275px] w-[275px] flex flex-col rounded-t-[6px]">
       <>
         {typeof iconSrc === 'string' ? (
           <Image src={img !== '' ? img : iconSrc} height={120} width={275} alt={name + " image"} className="rounded-t" />
@@ -37,7 +36,7 @@ export function SpecialityCard({ name, img }: Props) {
           </div>
         )}
       </>
-      <div className="flex items-center h-[66px] px-3 border-b-2 border-x-2 border-[#D9D9D9]">
+      <div className="flex items-center h-[66px] px-3 border-b-2 border-x-2 border-[#D9D9D9] rounded-b-[6px]">
         <span className="text-xl">{name}</span>
       </div>
     </Link>

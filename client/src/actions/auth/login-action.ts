@@ -84,6 +84,7 @@ export const loginUser = async (formData: FormData) => {
 
     return {
       success: 'Inicio de sesión exitoso',
+      data: responseData,
     }
   } catch (error) {
     console.log(error)

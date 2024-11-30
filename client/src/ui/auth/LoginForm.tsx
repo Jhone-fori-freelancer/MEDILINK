@@ -53,7 +53,8 @@ export function LoginForm() {
                     password: ""
                 })
                 setTimeout(() => {
-                    router.push('/dashboard')
+                    const redirectUrl = result.data.rol === 'MEDIC' || result.data.rol === 'ADMIN' ? '/doctor/calendar' : '/dashboard'
+                    router.push(redirectUrl)
                 }, 1000)
             }
         } catch (error: unknown) {

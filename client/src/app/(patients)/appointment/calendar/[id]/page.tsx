@@ -12,7 +12,7 @@ export default async function AppointmentById({ params, searchParams }: { params
   const id = Number(params.id.split('?')[0]);
   const doctor = await getDoctorById(id)
   const userCookie = cookies().get('user');
-  const user = userCookie ? JSON.parse(userCookie.value) : {};
+  const user = userCookie ? JSON.parse(userCookie.value) : null;
 
   if (!doctor) {
     redirect("/dashboard")

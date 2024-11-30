@@ -23,7 +23,7 @@ interface Props {
 }
 export function DoctorCard({ id_appointment, id_doctor, name, specialty, place = "Clínica Colón", img, dashboard, date, startTime }: Props) {
 
-  const [messageAlert, setMessageAlert] = useState({ title: "", description: <p></p>, confirm: "Confirmar", cancel: "Cancelar" })
+  const [messageAlert, setMessageAlert] = useState({ title: "", description: <span></span>, confirm: "Confirmar", cancel: "Cancelar" })
   const adjustedDate = new Date(date ?? new Date());
   adjustedDate.setMinutes(adjustedDate.getMinutes() + adjustedDate.getTimezoneOffset());
   const formattedDate = format(adjustedDate, "EEEE d 'de' MMMM", { locale: es });
@@ -38,7 +38,7 @@ export function DoctorCard({ id_appointment, id_doctor, name, specialty, place =
     setError(null)
     const alert = {
       title: "¿Querés cancelar la cita?",
-      description: <p>Querrías cancelar tu cita asignada para el <span className="font-bold">{formattedDate}</span> a las <span className="font-bold">{startTime?.slice(0, -3)}</span> en <span className="font-bold">{place}</span>.</p>,
+      description: <span>Querrías cancelar tu cita asignada para el <span className="font-bold">{formattedDate}</span> a las <span className="font-bold">{startTime?.slice(0, -3)}</span> en <span className="font-bold">{place}</span>.</span>,
       cancel: "Mantener cita",
       confirm: "Cancelar cita",
     }
@@ -50,7 +50,7 @@ export function DoctorCard({ id_appointment, id_doctor, name, specialty, place =
     setError(null)
     const alert = {
       title: "¿Queréis reprogramar la cita?",
-      description: <p>Tenés cita asignada el <span className="font-bold">{formattedDate}</span> a las <span className="font-bold">{startTime?.slice(0, -3)}</span> en <span className="font-bold">{place}</span>. Si reprogramás, tu cita actual será cancelada.</p>,
+      description: <span>Tenés cita asignada el <span className="font-bold">{formattedDate}</span> a las <span className="font-bold">{startTime?.slice(0, -3)}</span> en <span className="font-bold">{place}</span>. Si reprogramás, tu cita actual será cancelada.</span>,
       confirm: "Reprogramar cita",
       cancel: "Mantener cita"
     }

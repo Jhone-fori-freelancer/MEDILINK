@@ -1,5 +1,6 @@
 import { TopMenuDoctor } from "@/ui";
 import { cookies } from 'next/headers'
+import { redirect } from "next/navigation";
 
 export default function LayoutDashboard({
   children
@@ -7,7 +8,11 @@ export default function LayoutDashboard({
   children: React.ReactNode;
 }) {
   const userCookie = cookies().get('user');
-  const user = userCookie ? JSON.parse(userCookie.value) : {};
+  const user = userCookie ? JSON.parse(userCookie.value) : null;
+
+  if (user.rol !== 'MEDIC' && user.rol !== 'ADMIN') {
+    redirect('/')
+  }
   return (
     <div className="min-h-screen">
       <TopMenuDoctor user={user} />

@@ -9,7 +9,7 @@ import { PrintButton } from "@/components/PrintButton";
 export default async function ConfirmedPage({ params }: { params: { id: string } }) {
 
     const userCookie = cookies().get('user');
-    const user = userCookie ? JSON.parse(userCookie.value) : {};
+    const user = userCookie ? JSON.parse(userCookie.value) : null;
     const appointment: AppointmentWithDoctor = await getAppointmentById(params.id)
     const message = `Tu turno ha sido reservado para el ${appointment.date} a las ${appointment.startTime}hs con el doctor/a ${appointment.doctor.name} en la Clinica Colon`
     const notification = await sendMail(user.email, 'Cita confirmada', message)

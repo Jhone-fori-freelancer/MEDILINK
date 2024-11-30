@@ -6,7 +6,7 @@ export const revalidate = 0
 
 export default async function CalendarDoctorPage() {
     const userCookie = cookies().get('user');
-    const user: DoctorFromResponse = userCookie ? JSON.parse(userCookie.value) : {};
+    const user: DoctorFromResponse = userCookie ? JSON.parse(userCookie.value) : null;
 
     return (
         <div className="max-w-[1400px] mx-auto px-6">
