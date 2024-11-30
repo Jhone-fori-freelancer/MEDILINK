@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { BackButton, CalendarPatients } from '@/components'
 import Image from 'next/image'
 import { cookies } from 'next/headers'
+import { getHolidays } from '@/actions/calendar/calendar-actions'
 
 export const revalidate = 0
 
@@ -13,6 +14,7 @@ export default async function AppointmentById({ params, searchParams }: { params
   const doctor = await getDoctorById(id)
   const userCookie = cookies().get('user');
   const user = userCookie ? JSON.parse(userCookie.value) : null;
+  const holidays = await getHolidays()
 
   if (!doctor) {
     redirect("/dashboard")
@@ -65,7 +67,7 @@ export default async function AppointmentById({ params, searchParams }: { params
         </div> */}
       </div>
 
-      <CalendarPatients reschedule={isReschedule} doctor={{ id: doctor.id, name: doctor.name }} user={user} appointmentId={Number(appointmentId)} />
+      <CalendarPatients reschedule={isReschedule} doctor={{ id: doctor.id, name: doctor.name }} user={user} appointmentId={Number(appointmentId)} holidays={holidays} />
 
     </div>
   )

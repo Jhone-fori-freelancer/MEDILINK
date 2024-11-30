@@ -1,24 +1,79 @@
 "use client"
 
 import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+import { DayPicker, useNavigation } from "react-day-picker"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
-import { es } from 'date-fns/locale';
+import { es } from 'date-fns/locale/es';
+import { format } from "date-fns"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
+
+function CustomHeaderComponent() {
+  const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
+  return (
+    <thead>
+      <tr className="flex gap-2 w-full">
+        {days.map((day, index) => (
+          <th key={index} className="w-[6.5rem] text-black text-lg font-medium capitalize text-center">{day}</th>
+        ))}
+      </tr>
+    </thead>
+  )
+}
+
+function CustomCaptionComponent() {
+  // Estado para controlar el mes actual que se está mostrando
+  const [currentMonth] = React.useState(new Date());
+  const [currentMonthName, setCurrentMonthName] = React.useState(new Date());
+  const { goToMonth } = useNavigation();
+
+  // Generar los 3 meses a mostrar (mes actual, siguiente y siguiente)
+  const months = [
+    { label: format(currentMonth, "MMMM", { locale: es }), value: currentMonth },
+    { label: format(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1), "MMMM", { locale: es }), value: new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1) },
+    { label: format(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 2), "MMMM", { locale: es }), value: new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 2) },
+  ];
+
+  const handleMonthChange = (month: Date) => {
+    setCurrentMonthName(() => month);
+    goToMonth(month);
+  }
+
+  return (
+    <>
+      <div className="flex space-x-4">
+        {months.map((month, index) => (
+          <button
+            key={index}
+            onClick={() => handleMonthChange(month.value)} // Cambia el mes al hacer clic
+            className={`h-10 w-36 text-center text-lg font-medium border p-2 capitalize border-blue-500 text-blue-500 rounded-t-xl ${currentMonthName.getTime() === month.value.getTime() ? 'bg-blue-500 text-white' : ''}`}
+          >
+            {month.label}
+          </button>
+        ))}
+      </div>
+    </>
+  );
+}
 
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
   ...props
-}: CalendarProps & { appointmentsStatus?: { [key: string]: string } }) {
+}: CalendarProps & { appointmentsStatus?: { [key: string]: string } } & { waitingListDay: Date } & { errorDay: Date }) {
+  const currentMonth = new Date()
+  const nextMonth = new Date(currentMonth)
+  nextMonth.setMonth(currentMonth.getMonth() + 1)
+  const secondNextMonth = new Date(currentMonth)
+  secondNextMonth.setMonth(currentMonth.getMonth() + 2)
+
   return (
     <DayPicker
       locale={es}
       showOutsideDays={showOutsideDays}
+      weekStartsOn={0}
       className={cn("p-3", className)}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 ",
@@ -37,29 +92,41 @@ function Calendar({
         head_cell:
           "text-gray-800 rounded-md w-full font-bold capitalize",
         row: "flex w-full mt-2 gap-2",
-        cell: "h-20 w-9 grow p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+        cell: "h-20 w-9 grow p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-full w-full p-0 font-normal aria-selected:opacity-100 border border-[#97A1A3] bg-[#B1CDE5] rounded-sm"
+          "bg-[#C2DCF2] text-blue-500 !font-bold !hover:opacity-50 !hover:bg-secondaryBlue-200 text-[18px] justify-start items-start h-full w-full ps-2 pt-0 font-normal aria-selected:opacity-100 border border-[#97A1A3] rounded-sm",
         ),
         day_range_end: "day-range-end",
         day_selected:
-          "bg-secondaryBlue-400 text-primary-foreground hover:bg-secondaryBlue-400 hover:text-primary-foreground focus:bg-secondaryBlue-400 focus:text-primary-foreground ",
-        day_today: "bg-primary/70  text-white ",
+          "!bg-secondaryBlue-500 text-primary-foreground !hover:bg-secondaryBlue-200",
+        day_today: "text-white !opacity-100 !bg-secondaryBlue-500",
         day_outside:
-          "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
-        day_disabled: "text-muted-foreground opacity-50 ",
+          "day-outside text-muted-foreground opacity-100 aria-selected:text-muted-foreground aria-selected:opacity-30",
+        day_disabled: "text-[#d5d5d5] cursor-none !bg-white !opacity-100 relative after:content-[''] after:opacity-50 after:absolute after:w-[130%] after:h-[2px] after:bg-[#A6A6A6] after:-rotate-[-141deg] after:top-1/2 after:left-[-14px]",
         day_range_middle:
-          "aria-selected:bg-accent aria-selected:text-accent-foreground ",
+          "bg-secondaryBlue-500",
         day_hidden: "invisible ",
         ...classNames,
       }}
+      fromDate={currentMonth}
+      toDate={secondNextMonth}
+      modifiers={{
+        waiting: (date) =>
+          date.toDateString() === props.waitingListDay?.toDateString(),
+        error: (date) =>
+          date.toDateString() === props.errorDay?.toDateString(),
+      }}
+      modifiersClassNames={{
+        waiting: "relative after:text-[10px] after:content-['Lista_de_espera_abierta'] after:absolute after:top-full after:text-xs after:font-semibold after:w-full after:text-start after:top-[32%] after:bg-[#FFCC99] after:text-black after:w-[92%] after:left-[4%] after:h-[48px] after:rounded-md after:text-start after:p-1 after:text-wrap",
+
+        error: "relative after:text-[10px] after:content-['Sin_turnos_disponibles'] after:absolute after:top-full after:text-xs after:font-semibold after:w-full after:text-start after:top-[32%] after:bg-[#FFB4B2] after:text-black after:w-[92%] after:left-[4%] after:h-[48px] after:rounded-md after:text-start after:p-1 after:text-wrap",
+
+      }}
 
       components={{
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4 " />,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        Caption: CustomCaptionComponent,
+        Head: CustomHeaderComponent,
       }}
       {...props}
     />

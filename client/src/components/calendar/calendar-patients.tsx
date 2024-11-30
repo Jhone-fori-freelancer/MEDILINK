@@ -20,9 +20,10 @@ interface Props {
     user: PatientFromResponse
     reschedule: boolean
     appointmentId: number
+    holidays: string[]
 }
 
-export function CalendarPatients({ doctor, user, reschedule, appointmentId }: Props) {
+export function CalendarPatients({ doctor, user, reschedule, appointmentId, holidays }: Props) {
     const [hoursDoctor, setHoursDoctor] = useState<HoursDoctor>({ amHours: [], pmHours: [] })
     const [loading, setLoading] = useState(false)
     const [hour, setHour] = useState<string>("")
@@ -62,20 +63,22 @@ export function CalendarPatients({ doctor, user, reschedule, appointmentId }: Pr
     }, [formatYear])
 
     return (
-        <div className="grid grid-cols-3 gap-20 max-w-[1400px] mx-auto px-4 mt-10 ">
+        <div className="grid grid-cols-3 max-w-[1400px] mx-auto mt-10 ">
 
             {/* CALENDARIO  */}
             <Calendar
-                className="col-span-2"
+                className="col-span-2 ps-0"
                 mode="single"
                 showOutsideDays={false}
                 selected={date}
                 onSelect={setDate}
-                disabled={(date) => date.getDay() === 0 || format(date, 'yyyy-MM-dd') < format(new Date, 'yyyy-MM-dd')}
+                disabled={[(date) => date.getDay() === 0 || format(date, 'yyyy-MM-dd') < format(new Date, 'yyyy-MM-dd'), (date) => holidays.includes(format(date, 'yyyy-MM-dd'))]}
+                waitingListDay={new Date('Thu Dec 19 2024 00:00:00 GMT-0300 (hora estándar de Argentina)')}
+                errorDay={new Date('Thu Dec 20 2024 00:00:00 GMT-0300 (hora estándar de Argentina)')}
             />
 
             {/* HORARIOS DISPONIBLES  */}
-            <div className="justify-self-center">
+            <div className="ms-16 text-start">
                 <span className="font-bold capitalize text-xl">{formattedDate}</span>
                 {hoursDoctor.amHours.length === 0 && hoursDoctor.pmHours.length === 0 ? (
                     <div>
