@@ -62,7 +62,7 @@ function Calendar({
   classNames,
   showOutsideDays = true,
   ...props
-}: CalendarProps & { appointmentsStatus?: { [key: string]: string } } & { waitingListDay: Date } & { errorDay: Date }) {
+}: CalendarProps & { appointmentsStatus?: { [key: string]: string } } & { waitingListDay?: Date } & { errorDay?: Date }) {
   const currentMonth = new Date()
   const nextMonth = new Date(currentMonth)
   nextMonth.setMonth(currentMonth.getMonth() + 1)
@@ -103,7 +103,7 @@ function Calendar({
         day_today: "text-white !opacity-100 !bg-secondaryBlue-500",
         day_outside:
           "day-outside text-muted-foreground opacity-100 aria-selected:text-muted-foreground aria-selected:opacity-30",
-        day_disabled: "text-[#d5d5d5] cursor-none !bg-white !opacity-100 relative after:content-[''] after:opacity-50 after:absolute after:w-[130%] after:h-[2px] after:bg-[#A6A6A6] after:-rotate-[-141deg] after:top-1/2 after:left-[-14px]",
+        day_disabled: "text-[#d5d5d5] cursor-none !bg-white !opacity-100 relative after:content-[''] after:opacity-50 after:absolute after:w-[100%] after:h-[2px] after:bg-[#A6A6A6] after:-rotate-[-141deg] after:top-1/2 after:left-0",
         day_range_middle:
           "bg-secondaryBlue-500",
         day_hidden: "invisible ",
@@ -118,9 +118,9 @@ function Calendar({
           date.toDateString() === props.errorDay?.toDateString(),
       }}
       modifiersClassNames={{
-        waiting: "relative after:text-[10px] after:content-['Lista_de_espera_abierta'] after:absolute after:top-full after:text-xs after:font-semibold after:w-full after:text-start after:top-[32%] after:bg-[#FFCC99] after:text-black after:w-[92%] after:left-[4%] after:h-[48px] after:rounded-md after:text-start after:p-1 after:text-wrap",
+        waiting: "relative after:text-[10px] after:content-['Lista_de_espera_abierta'] after:z-10  after:absolute after:text-xs after:font-semibold after:text-start after:top-[30%] after:bg-[#FFCC99] after:text-black after:w-[98%] after:left-[1.5px] after:h-[48px] after:rounded-md after:text-start after:p-1 after:text-wrap",
 
-        error: "relative after:text-[10px] after:content-['Sin_turnos_disponibles'] after:absolute after:top-full after:text-xs after:font-semibold after:w-full after:text-start after:top-[32%] after:bg-[#FFB4B2] after:text-black after:w-[92%] after:left-[4%] after:h-[48px] after:rounded-md after:text-start after:p-1 after:text-wrap",
+        error: "relative after:text-[10px] after:content-['Sin_turnos_disponibles'] after:z-10 after:absolute after:text-xs after:font-semibold after:text-start after:top-[30%] after:bg-[#FFB4B2] after:text-black after:w-[98%] after:left-[1.5px] after:h-[48px] after:rounded-md after:text-start after:p-1 after:text-wrap",
 
       }}
 

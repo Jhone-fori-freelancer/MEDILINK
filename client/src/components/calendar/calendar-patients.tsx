@@ -63,11 +63,11 @@ export function CalendarPatients({ doctor, user, reschedule, appointmentId, holi
     }, [formatYear])
 
     return (
-        <div className="grid grid-cols-3 max-w-[1400px] mx-auto mt-10 ">
+        <div className="grid grid-cols-3 max-w-[1400px] mx-auto mt-10 grid-flow-row">
 
             {/* CALENDARIO  */}
             <Calendar
-                className="col-span-2 ps-0"
+                className="col-span-2 ps-0 max-[1180px]:col-span-3"
                 mode="single"
                 showOutsideDays={false}
                 selected={date}
@@ -78,7 +78,7 @@ export function CalendarPatients({ doctor, user, reschedule, appointmentId, holi
             />
 
             {/* HORARIOS DISPONIBLES  */}
-            <div className="ms-16 text-start">
+            <div className="ms-16 text-start max-[1180px]:hidden">
                 <span className="font-bold capitalize text-xl">{formattedDate}</span>
                 {hoursDoctor.amHours.length === 0 && hoursDoctor.pmHours.length === 0 ? (
                     <div>
