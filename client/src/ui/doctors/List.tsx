@@ -10,7 +10,7 @@ interface Props {
 export function DoctorList({ list, title }: Props) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {list.map((doctor) => (
           <div key={doctor.id}>
             {title === 'speciality' && 'specialization' in doctor ? (

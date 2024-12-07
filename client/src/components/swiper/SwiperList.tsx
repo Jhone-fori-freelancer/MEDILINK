@@ -18,10 +18,17 @@ export function SwiperList({ list }: { list: DoctorFromResponse[] }) {
         modules={[Navigation]}
         navigation={{ nextEl: ".next-arrow", prevEl: ".prev-arrow" }}
         breakpoints={{
+          320: {
+            slidesPerView: 1,
+          },
           640: {
-            slidesPerView: 3
+            slidesPerView: 2,
+            spaceBetween: 20
           },
           1024: {
+            slidesPerView: 3
+          },
+          1280: {
             slidesPerView: 4
           },
           1680: {

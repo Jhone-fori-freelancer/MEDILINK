@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image"
 import { IconCardiology, IconNeurology, IconPediatrics, IconSurgery, IconTraumatology } from "@/components/icons";
+import SpecialityImage from "/public/logo.png";
 
 interface Props {
   name?: string;
@@ -24,14 +25,17 @@ const iconMap: { [key: string]: JSX.Element } = {
 
 export function SpecialityCard({ name, img }: Props) {
   const iconSrc = name && iconMap[name] ? iconMap[name] : '';
+  console.log(img);
 
   return (
-    <Link href={`/specialty/${name}`} className="min-h-[184px] h-[184px] min-w-[275px] w-[275px] flex flex-col rounded-t-[6px]">
+    <Link href={`/specialty/${name}`} className="min-h-[184px] h-[184px] min-w-[275px] flex flex-col rounded-t-[6px] xl:w-[275px] lg:w-[250px]">
       <>
         {typeof iconSrc === 'string' ? (
-          <Image src={img !== '' ? img : iconSrc} height={120} width={275} alt={name + " image"} className="rounded-t" />
+          <div className="flex justify-center items-center h-[120px] w-full bg-blue-50 rounded-t lg:w-[275px]">
+            <Image src={SpecialityImage} height={120} width={275} alt={name + " image"} className="rounded-t object-contain h-full" />
+          </div>
         ) : (
-          <div className="flex justify-center items-center h-[120px] w-[275px] bg-blue-50 rounded-t">
+          <div className="flex justify-center items-center h-[120px] w-full bg-blue-50 rounded-t lg:w-[275px]">
             {iconSrc}
           </div>
         )}

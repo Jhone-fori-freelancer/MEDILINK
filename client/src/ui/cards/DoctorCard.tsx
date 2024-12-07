@@ -85,13 +85,13 @@ export function DoctorCard({ id_appointment, id_doctor, name, specialty, place =
 
   return (
     <>
-      <div className="w-[854px] h-[168px] rounded-xl flex items-center gap-4 pl-4 py-4 shadow-2xl">
+      <div className="w-full min-h-[168px] h-full rounded-xl flex items-center gap-4 pl-4 py-4 shadow-2xl flex-wrap lg:w-[854px]">
 
         {/* IMAGE  */}
 
         <ImageValidate alt={name + "image"} src={img!} className="object-cover" />
 
-        <div className="flex flex-col justify-center h-[89px] px-3">
+        <div className="flex flex-col justify-center min-h-[89px] px-3">
           <span className="font-medium text-[22px] text-[#0C0C0E]">{name}</span>
           <span className="font-medium -mt-1 mb-2 text-lg text-[#505256]">{specialty}</span>
           {dashboard && (

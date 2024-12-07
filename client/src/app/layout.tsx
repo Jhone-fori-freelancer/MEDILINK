@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins } from 'next/font/google'
 import "./globals.css";
 
@@ -11,6 +11,14 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Policonsultorio",
   description: "Pagina para un policonsultorio",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

@@ -12,9 +12,9 @@ export default async function SpecialtyPage({ params }: { params: { name: string
 
 
     return (
-        <div className="max-w-[1200px] mx-auto px-4">
+        <div className="max-w-[1200px] mt-8 mx-auto px-4">
             <BackButton />
-            <div className="max-w-[900px]">
+            <div className="max-w-[900px] ms-12">
                 <h1 className="text-[32px] font-medium text-[#1A2C33]">{specialty.charAt(0).toUpperCase() + specialty.slice(1)}</h1>
 
                 <div className="my-8 flex flex-col gap-6">
