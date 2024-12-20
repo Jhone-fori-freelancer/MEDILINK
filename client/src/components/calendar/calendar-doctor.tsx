@@ -2,7 +2,7 @@
 
 import { getAllAppointmentPatientsByDate } from "@/actions";
 import { useEffect, useState } from "react";
-import { Calendar } from "../ui/calendar";
+import { DoctorCalendar } from "../ui/doctor-calendar";
 import { es } from 'date-fns/locale';
 import { format } from "date-fns";
 import Link from "next/link";
@@ -45,6 +45,8 @@ export function CalendarDoctor({ user_id, user_name }: Props) {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date])
+
+    console.log(appointments);
 
 
     return (
@@ -90,8 +92,8 @@ export function CalendarDoctor({ user_id, user_name }: Props) {
             </div>
 
             {/* CALENDARIO  */}
-            <div className="">
-                <Calendar
+            <div className="mt-16">
+                <DoctorCalendar
                     className="col-span-2"
                     mode="single"
                     showOutsideDays={false}

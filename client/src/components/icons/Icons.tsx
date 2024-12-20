@@ -162,3 +162,11 @@ export const IconTraumatology = ({ className, size, color }: IconProps) => {
 
   )
 }
+
+export const IconSelectArrow = ({ className, size, color }: IconProps) => {
+  return (
+    <svg viewBox="0 0 24 24" width={size ?? '18'} height={size ?? '18'} stroke={color ?? "#222"} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  )
+}
