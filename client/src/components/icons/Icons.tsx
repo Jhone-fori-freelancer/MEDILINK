@@ -170,3 +170,20 @@ export const IconSelectArrow = ({ className, size, color }: IconProps) => {
     </svg>
   )
 }
+
+export const IconPhone = ({ className, size, color }: IconProps) => {
+  return (
+    <svg width={size ?? "29"} height={size ?? "28"} viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <path d="M2 4.375C2 2.85622 3.23122 1.625 4.75 1.625H9.25896C9.8508 1.625 10.3762 2.00372 10.5634 2.56519L12.6229 8.74367C12.8393 9.39282 12.5454 10.1023 11.9334 10.4083L8.82963 11.9602C10.3452 15.3217 13.0533 18.0298 16.4148 19.5454L17.9667 16.4416C18.2727 15.8296 18.9822 15.5357 19.6313 15.7521L25.8098 17.8116C26.3713 17.9988 26.75 18.5242 26.75 19.116V23.625C26.75 25.1438 25.5188 26.375 24 26.375H22.625C11.2341 26.375 2 17.1409 2 5.75V4.375Z" stroke={color ?? "#025DAB"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+
+  )
+}
+export const IconMail = ({ className, size, color }: IconProps) => {
+  return (
+    <svg width={size ?? "29"} height={size ?? "29"} viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <path d="M2 24.0948V11.4444C2 10.4971 2.47345 9.61245 3.26168 9.08697L13.1783 2.47586C14.1301 1.84138 15.3699 1.84138 16.3217 2.47586L26.2383 9.08697C27.0265 9.61245 27.5 10.4971 27.5 11.4444V24.0948M2 24.0948C2 25.6596 3.26853 26.9281 4.83333 26.9281H24.6667C26.2315 26.9281 27.5 25.6596 27.5 24.0948M2 24.0948L11.5625 17.7198M27.5 24.0948L17.9375 17.7198M2 11.3448L11.5625 17.7198M27.5 11.3448L17.9375 17.7198M17.9375 17.7198L16.3217 18.797C15.3699 19.4315 14.1301 19.4315 13.1783 18.797L11.5625 17.7198" stroke={color ?? "#025DAB"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+
+  )
+}

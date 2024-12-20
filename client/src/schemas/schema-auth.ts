@@ -54,3 +54,9 @@ export const schemaUpdateProfile = z.object({
   number_associate: z.string({ message: 'Numero de asociado requerido' }),
   image: z.string().optional(),
 })
+
+export const schemaLoginTwoFactor = z.object({
+  identificationNumber: z.string().optional(),
+  phoneNumber: z.string().optional(),
+  acceptTerms: z.boolean(),
+})
