@@ -1,9 +1,9 @@
-import { RegisterForm } from "@/ui";
+import { RegisterSelect } from "@/ui/auth/RegisterSelect";
 
 export default function RegisterPage() {
     return (
         <div className=" my-8">
-            <RegisterForm />
+            <RegisterSelect />
         </div>
     );
 }

@@ -5,11 +5,15 @@ import { useState } from "react";
 import { ButtonComponent } from "../buttons/ButtonComponent";
 import { sendCode } from "@/actions/auth/login-action";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from 'next/navigation'
+import { StepIndicator } from "./stepsForm/StepIndicator";
 
 export function LoginSendCode() {
   const [selectedOption, setSelectedOption] = useState<string>('')
   const [error, setError] = useState<string>('')
   const router = useRouter()
+  const params = useSearchParams()
+  const showSteps = params.get('steps')
 
   const handleSelectOption = (option: string) => {
     if (selectedOption === option) {
@@ -41,7 +45,11 @@ export function LoginSendCode() {
 
       if (result.success) {
         console.log('Code sent successfully')
-        router.push('/auth/login/verify-code')
+        if (showSteps) {
+          router.push('/auth/verify-code?steps=true')
+        } else {
+          router.push('/auth/verify-code')
+        }
       }
     } catch (error) {
       console.log(error);
@@ -49,13 +57,14 @@ export function LoginSendCode() {
   }
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center gap-8 text-secondaryBlue-500">
+    <div className="w-full h-full flex flex-col items-center justify-center gap-6 text-secondaryBlue-500">
+      {showSteps && <StepIndicator step={2} />}
       <h2 className="my-2 font-medium text-3xl">Verificá tu cuenta para continuar</h2>
       <p className="text-gray-500 text-xl -mt-4">¿Cómo quieres recibir tu código?</p>
 
-      <button type="button" title="phone" onClick={() => handleSelectOption('phone')} className={`flex gap-7 w-full mt-6 py-2 px-4 ${selectedOption === 'phone' ? 'bg-blue-100/50 border-blue-500 rounded-md' : ''}`}>
-        <div className="size-[54px] border border-blue-500 rounded-md content-center place-items-center">
-          <IconPhone />
+      <button type="button" title="phone" onClick={() => handleSelectOption('phone')} className={`flex gap-7 w-full mt-6 p-4 ${selectedOption === 'phone' ? 'border border-blue-500 rounded-md' : ''}`}>
+        <div className={`size-[54px] border border-blue-500 rounded-md content-center place-items-center ${selectedOption === 'phone' ? 'bg-blue-500' : ''}`}>
+          <IconPhone color={selectedOption === 'phone' ? 'white' : '#025dab'} />
         </div>
         <div className="flex flex-col text-start gap-1">
           <h4 className="text-xl font-medium">Recibir código por SMS</h4>
@@ -63,9 +72,9 @@ export function LoginSendCode() {
         </div>
       </button>
 
-      <button type="button" title="mail" onClick={() => handleSelectOption('mail')} className={`flex gap-7 w-full mb-6 py-2 px-4 ${selectedOption === 'mail' ? 'bg-blue-100/50 border-blue-500 rounded-md' : ''}`}>
-        <div className="size-[54px] border border-blue-500 rounded-md content-center place-items-center">
-          <IconMail />
+      <button type="button" title="mail" onClick={() => handleSelectOption('mail')} className={`flex gap-7 w-full mb-6 p-4 ${selectedOption === 'mail' ? 'border border-blue-500 rounded-md' : ''}`}>
+        <div className={`size-[54px] border border-blue-500 rounded-md content-center place-items-center ${selectedOption === 'mail' ? 'bg-blue-500' : ''}`}>
+          <IconMail color={selectedOption === 'mail' ? 'white' : '#025dab'} />
         </div>
         <div className="flex flex-col text-start gap-1">
           <h4 className="text-xl font-medium">Recibir código por EMAIL</h4>

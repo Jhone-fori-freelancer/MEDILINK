@@ -121,7 +121,7 @@ export function LoginTwoFactor() {
         {success && <p className="text-xl text-emerald-500">{success}</p>}
         {error && <p className="text-xl text-red-600">{error}</p>}
 
-        <Link href={'/auth/register'} className="text-xl mt-4 ">¿No tienes una cuenta? <span className="text-blue-500 hover:text-blue-800 cursor-pointer select-none">Regístrate</span></Link>
+        <Link href={'/auth/register'} className="text-xl mt-8">¿No tienes una cuenta? <span className="text-blue-500 hover:text-blue-800 cursor-pointer select-none">Regístrate</span></Link>
       </div>
 
     </form>

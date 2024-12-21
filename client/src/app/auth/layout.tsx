@@ -8,7 +8,7 @@ export default function LayoutAuth({
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="grow flex justify-center items-center">
+      <div className="flex justify-center items-center">
         {children}
       </div>
     </div>

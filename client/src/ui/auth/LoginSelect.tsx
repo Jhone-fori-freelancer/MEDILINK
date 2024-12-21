@@ -9,7 +9,7 @@ export function LoginSelect() {
   return (
     <>
       {loginType === 'twoFactor' ? <LoginTwoFactor /> : <LoginForm />}
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-2">
         <button
           className="text-blue-500 hover:text-blue-700"
           onClick={() => setLoginType(loginType === 'twoFactor' ? 'login' : 'twoFactor')}
