@@ -4,7 +4,7 @@ import { SvgNotifications } from "@/components";
 import { SvgPerfil } from "@/components/svg/svgs";
 import Image from "next/image";
 import Link from "next/link";
-import Logo from '/public/logo_full.png'
+import Logo from '/public/logo_full_final.webp'
 import { DoctorFromResponse } from "@/interfaces/user";
 import { logoutUser } from "@/actions/auth/login-action";
 

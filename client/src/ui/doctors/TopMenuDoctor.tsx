@@ -3,7 +3,7 @@
 import { SvgCalendar, SvgNotifications, SvgPerfil } from '@/components'
 import Link from 'next/link'
 import React, { useState } from 'react'
-import Logo from '/public/logo_full.png'
+import Logo from '/public/logo_full_final.webp'
 import Image from 'next/image'
 import { DoctorFromResponse } from '@/interfaces/user'
 import { logoutUser } from "@/actions/auth/login-action";

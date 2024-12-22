@@ -1,7 +1,7 @@
 import { SvgHome, SvgNotifications } from "@/components";
 import { SvgCalendar } from "@/components/svg/svgs";
 import Link from "next/link";
-import Logo from '/public/logo_full.png'
+import Logo from '/public/logo_full_final.webp'
 import Image from "next/image";
 
 export function NavbarDoctors() {
