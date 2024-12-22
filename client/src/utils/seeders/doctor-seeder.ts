@@ -12,6 +12,8 @@ const doctors = [
     active: true,
     specialization: 'Cardiología',
     licenseNumber: 'MP123456',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 2,
@@ -26,6 +28,8 @@ const doctors = [
     active: true,
     specialization: 'Pediatría',
     licenseNumber: 'MP654321',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 3,
@@ -40,6 +44,8 @@ const doctors = [
     active: true,
     specialization: 'Cardiología',
     licenseNumber: '1234',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 4,
@@ -54,6 +60,8 @@ const doctors = [
     active: true,
     specialization: 'Cardiología',
     licenseNumber: 'MP345678',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 5,
@@ -68,6 +76,8 @@ const doctors = [
     active: true,
     specialization: 'Traumatología',
     licenseNumber: 'MP234567',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 6,
@@ -82,6 +92,8 @@ const doctors = [
     active: true,
     specialization: 'Neurología',
     licenseNumber: 'MP765432',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 7,
@@ -96,6 +108,8 @@ const doctors = [
     active: true,
     specialization: 'Dermatología',
     licenseNumber: 'MP876543',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 8,
@@ -110,6 +124,8 @@ const doctors = [
     active: true,
     specialization: 'Traumatología',
     licenseNumber: 'MP987654',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 9,
@@ -124,6 +140,8 @@ const doctors = [
     active: true,
     specialization: 'Traumatología',
     licenseNumber: 'MP543210',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 10,
@@ -138,6 +156,8 @@ const doctors = [
     active: true,
     specialization: 'Pediatría',
     licenseNumber: 'MP432109',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 11,
@@ -152,6 +172,8 @@ const doctors = [
     active: true,
     specialization: 'Pediatría',
     licenseNumber: 'MP654210',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 12,
@@ -166,6 +188,8 @@ const doctors = [
     active: true,
     specialization: 'Neurología',
     licenseNumber: 'MP543210',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
   {
     id: 13,
@@ -180,6 +204,8 @@ const doctors = [
     active: true,
     specialization: 'Neurología',
     licenseNumber: 'MP432156',
+    clinic_id: 1,
+    role: 'MEDIC',
   },
 ]
 
@@ -202,6 +228,11 @@ const uploadDoctors = async () => {
           active: doctor.active,
           specialization: doctor.specialization,
           licenseNumber: doctor.licenseNumber,
+          clinic_id: doctor.clinic_id,
+          role: doctor.role,
+          dni: doctor.dni,
+          obraSocial: doctor.obraSocial,
+          numeroAsociado: doctor.numeroAsociado,
         }),
       })
 

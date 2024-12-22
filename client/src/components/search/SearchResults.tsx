@@ -1,6 +1,7 @@
 import { Clinic } from '@/interfaces/clinic'
 import { DoctorFromResponse } from '@/interfaces/user'
-import { DoctorCard, PlaceCard, SpecialityCard } from "@/ui"
+//removi la card de Place por el momento
+import { DoctorCard, SpecialityCard } from "@/ui"
 
 type Props = {
   query: string
@@ -83,7 +84,6 @@ export const SearchResults: React.FC<Props> = ({ query, data, clinicList }) => {
 
   const isNameSearch = results.some(result => result?.name.toLowerCase().includes(query.toLowerCase()))
   const isSpecialitySearch = results.some(result => result?.speciality.toLowerCase().includes(query.toLowerCase()))
-  const isPlaceSearch = results.some(result => result?.place.toLowerCase().includes(query.toLowerCase()))
 
   let filteredResults = results
 
@@ -91,14 +91,6 @@ export const SearchResults: React.FC<Props> = ({ query, data, clinicList }) => {
     filteredResults = Array.from(
       new Map(
         filteredResults.map(item => [item?.speciality, item])
-      ).values()
-    )
-  }
-
-  if (isPlaceSearch) {
-    filteredResults = Array.from(
-      new Map(
-        filteredResults.map(item => [item?.place, item])
       ).values()
     )
   }
@@ -121,9 +113,7 @@ export const SearchResults: React.FC<Props> = ({ query, data, clinicList }) => {
                   {isSpecialitySearch && result?.speciality && (
                     <SpecialityCard img="" name={result?.speciality} />
                   )}
-                  {isPlaceSearch && result?.place && !result?.name && (
-                    <PlaceCard details address={result?.address} img="" name={result?.place} />
-                  )}
+
                 </div>
               ))}
             </div>

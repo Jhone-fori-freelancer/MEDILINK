@@ -88,3 +88,12 @@ export interface UpdatePatient {
   insurer: string
   image: string
 }
+
+export interface RegisterPatient {
+  name: string
+  email: string
+  phone: string
+  obraSocial: string
+  dni: string
+  numeroAsociado: string
+}

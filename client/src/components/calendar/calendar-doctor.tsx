@@ -50,7 +50,7 @@ export function CalendarDoctor({ user_id, user_name }: Props) {
 
 
     return (
-        <div className="grid grid-cols-[60%_40%] gap-8 ">
+        <div className="grid grid-cols-1 lg:grid-cols-[60%_40%] gap-8">
             {/* CITAS  */}
             <div className="">
                 <h2 className="text-6xl font-medium text-secondaryBlue-500">Bienvenido {user_name}!</h2>

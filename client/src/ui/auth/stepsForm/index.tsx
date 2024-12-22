@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { StepIndicator } from "./StepIndicator";
 import RegisterInput from "./RegisterInput";
+import { registerPatient } from "@/actions/auth/register-action";
 
 interface Props {
   isDoctor: boolean;
@@ -13,20 +14,23 @@ interface Props {
 export function AuthStepsForm({ isDoctor }: Props) {
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     dni: "",
     phone: "",
     specialty: "",
     licenseNumber: "",
-    establishment: ""
+    establishment: "",
+    email: "",
+    obraSocial: "",
+    numeroAsociado: "",
   });
   const [error, setError] = useState("");
   const router = useRouter()
 
-  const handleNext = (step: number) => {
+  const handleNext = async (step: number) => {
     console.log(step);
     if (step === 0) {
-      if (!formData.fullName || !formData.dni || !formData.phone) {
+      if (!formData.name || !formData.dni || !formData.phone) {
         setError("Por favor completá los campos obligatorios.");
         return;
       }
@@ -38,8 +42,55 @@ export function AuthStepsForm({ isDoctor }: Props) {
         setError("Por favor completá los campos obligatorios.");
         return;
       }
-      //guardar la info de formData en cookies y poder usar en send-code
-      router.push('/auth/send-code?steps=true')
+
+      try {
+        const result = await registerPatient(formData)
+        console.log(result)
+
+        if (result.errors || result.registerError) {
+          setError(result.message + ': ' + result.registerError || 'Error desconocido al iniciar sesión.')
+          return
+        }
+
+        if (result.success) {
+          console.log(result.success);
+          console.log("Doctor registrado correctamente");
+          router.push('/auth/send-code?steps=true')
+        }
+      } catch (error) {
+        setError('Ha ocurrido un error al guardar la informacion de registro' + error)
+      }
+    }
+
+    if (step === 1 && !isDoctor) {
+      if (!formData.email || !formData.obraSocial || !formData.numeroAsociado) {
+        setError("Por favor completá los campos obligatorios.");
+        return;
+      }
+      console.log(formData);
+
+      try {
+        const result = await registerPatient(formData)
+        console.log(result)
+
+        if (result.errors || result.registerError) {
+          if (result.errors) {
+            const errorMessages = Object.values(result.errors).flat().join(', ');
+            setError(result.message + ': ' + errorMessages);
+            return;
+          }
+          setError(result.message + ': ' + result.registerError || 'Error desconocido al iniciar sesión.')
+          return
+        }
+
+        if (result.success) {
+          console.log(result.success);
+          console.log("Doctor registrado correctamente");
+          router.push('/auth/send-code?steps=true')
+        }
+      } catch (error) {
+        setError('Ha ocurrido un error al guardar la informacion de registro' + error)
+      }
     }
     setError("");
     console.log(formData);
@@ -55,7 +106,7 @@ export function AuthStepsForm({ isDoctor }: Props) {
       <form className="justify-items-center">
         {step === 0 && (
           <div className="w-full flex flex-col items-center gap-8 my-12">
-            <RegisterInput label="Nombre Completo" type="text" placeholder="Escribí tu nombre igual que en tu DNI" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} isOptional={false} />
+            <RegisterInput label="Nombre Completo" type="text" placeholder="Escribí tu nombre igual que en tu DNI" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} isOptional={false} />
             <RegisterInput label="Numero de identificación" type="text" placeholder="Ingresá tu número de DNI (sin puntos)." value={formData.dni} onChange={(e) => setFormData({ ...formData, dni: e.target.value })} isOptional={false} />
             <RegisterInput label="Numero de telefono" type="email" placeholder="Ingresá tu número teléfono celular" value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} isOptional={false} />
           </div>
@@ -66,6 +117,14 @@ export function AuthStepsForm({ isDoctor }: Props) {
             <RegisterInput label="Especialidad Médica" type="text" placeholder="Escribí tu especialidad médica." value={formData.specialty} onChange={(e) => setFormData({ ...formData, specialty: e.target.value })} isOptional={false} />
             <RegisterInput label="Número de Matrícula Profesional" type="text" placeholder="Ingresá tu matrícula profesional" value={formData.licenseNumber} onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })} isOptional={false} />
             <RegisterInput label="Establecimiento de atención" type="text" placeholder="Escribí el lugar donde atendés." value={formData.establishment} onChange={(e) => setFormData({ ...formData, establishment: e.target.value })} isOptional={true} />
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="w-full flex flex-col items-center gap-8 my-12">
+            <RegisterInput label="Correo electrónico" type="text" placeholder="Ingresá tu correo para notificarte" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} isOptional={false} />
+            <RegisterInput label="Obra social/Aseguradora opcional" type="text" placeholder="Escribí el nombre de tu obra social" value={formData.obraSocial} onChange={(e) => setFormData({ ...formData, obraSocial: e.target.value })} isOptional={false} />
+            <RegisterInput label="Número de asociado" type="text" placeholder="Ingresá tu número del asociado" value={formData.numeroAsociado} onChange={(e) => setFormData({ ...formData, numeroAsociado: e.target.value })} isOptional={true} />
           </div>
         )}
         <ButtonComponent size="normal" text="Siguiente" variant="dark" onClick={() => handleNext(step)} />

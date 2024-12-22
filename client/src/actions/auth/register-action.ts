@@ -1,6 +1,8 @@
 'use server'
+import { RegisterPatient } from '@/interfaces/user'
 import { schemaRegister } from '@/schemas'
 import { cookies } from 'next/headers'
+import { loginUser } from './login-action'
 
 const BASE_URL = process.env.API_URL
 
@@ -89,6 +91,103 @@ export const createUser = async (formData: FormData) => {
       httpOnly: true,
       path: '/',
     })
+
+    return {
+      success: 'Registro exitoso',
+    }
+  } catch (error) {
+    return {
+      errors: {},
+      registerError: 'Error al comunicarse con el servidor' + error,
+      message: 'Algo salió mal durante el registro.' + error,
+    }
+  }
+}
+
+export const registerPatient = async (data: RegisterPatient) => {
+  const url = BASE_URL + '/patients/create'
+  const cookieStore = cookies()
+
+  const validatedFields = schemaRegister.safeParse({
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    obraSocial: data.obraSocial,
+    dni: data.dni,
+    numeroAsociado: data.numeroAsociado,
+    password: 'test123',
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Debe rellenar todos los campos. Error al Registrarse.',
+    }
+  }
+
+  const body = {
+    user: {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      obraSocial: data.obraSocial,
+      dni: data.dni,
+      numeroAsociado: data.numeroAsociado,
+      password: 'test123',
+      img: 'https://res.cloudinary.com/db395v0wf/image/upload/v1729121057/vooufndzyzyyfnyi4zwv.png',
+      active: true,
+    },
+    insurer: data.obraSocial,
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+
+    const responseData = await response.json()
+    console.log(responseData)
+
+    if (!responseData) {
+      return {
+        errors: {},
+        registerError: null,
+        message: 'Algo salio mal...',
+      }
+    }
+
+    if (responseData.error === 'Data integrity violation') {
+      return {
+        errors: {},
+        registerError:
+          'El DNI, Email o Numero de asociado ya se encuentran registrados',
+        message: 'Error al registrarse',
+      }
+    }
+
+    if (responseData.message) {
+      return {
+        errors: {},
+        registerError: responseData.message,
+        message: 'Error al registrarse',
+      }
+    }
+
+    cookieStore.set('user', JSON.stringify(responseData), {
+      httpOnly: true,
+      path: '/',
+    })
+
+    const formData = new FormData()
+    formData.append('email', data.email)
+    formData.append('password', 'test123')
+
+    const loginNewUser = await loginUser(formData)
+    console.log(loginNewUser)
 
     return {
       success: 'Registro exitoso',

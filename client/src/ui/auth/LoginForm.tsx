@@ -67,21 +67,23 @@ export function LoginForm() {
         <form onSubmit={submit} className="grid w-[500px] p-6 gap-4 rounded-3xl text-secondaryBlue-700">
             <h2 className="text-4xl my-2 font-medium">Iniciar Sesión</h2>
 
-            <label htmlFor="email" className="text-xl">Email <span className="text-red-500">*</span></label>
+            <label htmlFor="email" className="text-secondaryBlue-500 font-medium text-xl">Email <span className="text-red-500">*</span></label>
             <input
                 type="text"
                 id="email"
+                placeholder="Ingrese su email"
                 {...register("email")}
-                className="min-h-9 border rounded-3xl bg-[#F6F7F7] px-4 py-2"
+                className="border border-[#c2c2c2] rounded-xl w-[412px] h-16 px-4 text-xl bg-[#F6F7F7]"
             />
             {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-            <label htmlFor="password" className="text-xl">Contraseña <span className="text-red-500">*</span></label>
+            <label htmlFor="password" className="text-secondaryBlue-500 font-medium text-xl">Contraseña <span className="text-red-500">*</span></label>
             <input
                 type="password"
                 id="password"
+                placeholder="Ingrese su contraseña"
                 {...register("password")}
-                className="min-h-9 border rounded-3xl bg-[#F6F7F7] px-4 py-2"
+                className="border border-[#c2c2c2] rounded-xl w-[412px] h-16 px-4 text-xl bg-[#F6F7F7]"
             />
             {errors.password && <p className="text-red-500">{errors.password.message}</p>}
 

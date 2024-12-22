@@ -73,8 +73,8 @@ export function CalendarPatients({ doctor, user, reschedule, appointmentId, holi
                 selected={date}
                 onSelect={setDate}
                 disabled={[(date) => date.getDay() === 0 || format(date, 'yyyy-MM-dd') < format(new Date, 'yyyy-MM-dd'), (date) => holidays.includes(format(date, 'yyyy-MM-dd'))]}
-                waitingListDays={[new Date('Thu Dec 19 2024 00:00:00 GMT-0300 (hora estándar de Argentina)')]}
-                errorDays={[new Date('Thu Dec 20 2024 00:00:00 GMT-0300 (hora estándar de Argentina)')]}
+                waitingListDays={[new Date('Thu Dec 23 2024 00:00:00 GMT-0300 (hora estándar de Argentina)')]}
+                errorDays={[new Date('Thu Dec 24 2024 00:00:00 GMT-0300 (hora estándar de Argentina)')]}
             />
 
             {/* HORARIOS DISPONIBLES  */}

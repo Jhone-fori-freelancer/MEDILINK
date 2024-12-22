@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <div>
-      <Header user={user} />
+      <Header user={user} isHome />
       <div>
         <div className="relative w-full overflow-hidden">
           <div className="flex transition-transform ease-out duration-500">

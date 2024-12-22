@@ -8,10 +8,10 @@ import { DoctorFromResponse } from "@/interfaces/user";
 import { logoutUser } from "@/actions/auth/login-action";
 
 
-export function Header({ user, isLoginPage }: { user?: DoctorFromResponse, isLoginPage?: boolean }) {
+export function Header({ user, isLoginPage, isHome }: { user?: DoctorFromResponse, isLoginPage?: boolean, isHome?: boolean }) {
   return (
 
-    <header className={`flex justify-between items-center py-11 px-24  ${user ? 'border-b-[6px] border-b-secondaryBlue-500' : ''}`}>
+    <header className={`flex justify-between items-center py-11 px-24  ${user || isHome ? 'border-b-[6px] border-b-secondaryBlue-500' : ''}`}>
 
       <Link href={user ? "/dashboard" : '/'} className="text-lg font-bold">
         <Image src={Logo} alt="logo" width={250} height={50} />
@@ -23,6 +23,22 @@ export function Header({ user, isLoginPage }: { user?: DoctorFromResponse, isLog
             <nav>
               <ul className="flex gap-8 items-center">
                 <li className="flex gap-[30px]" >
+                  <Link
+                    href={"/auth/register"}>
+                    <ButtonComponent size="normal" text="Registrarse" variant="dark" />
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+          )}
+          {isHome && (
+            <nav>
+              <ul className="flex gap-8 items-center">
+                <li className="flex gap-[30px]" >
+                  <Link
+                    href={"/auth/login"}>
+                    <ButtonComponent size="normal" text="Iniciar Sesión" variant="light" />
+                  </Link>
                   <Link
                     href={"/auth/register"}>
                     <ButtonComponent size="normal" text="Registrarse" variant="dark" />

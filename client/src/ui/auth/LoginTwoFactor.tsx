@@ -63,7 +63,7 @@ export function LoginTwoFactor() {
           acceptTerms: false
         })
         setTimeout(() => {
-          router.push('/auth/login/verified')
+          router.push('/auth/send-code')
         }, 1000)
       }
 
@@ -110,6 +110,7 @@ export function LoginTwoFactor() {
           type="checkbox"
           {...register("acceptTerms", { required: true })}
           className="mr-2"
+          required
         />
         Acepto los términos y condiciones
       </label>

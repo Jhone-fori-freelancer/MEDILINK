@@ -1,6 +1,8 @@
 'use server'
 import { schemaLogin, schemaLoginTwoFactor } from '@/schemas'
 import { cookies } from 'next/headers'
+import { sendMail } from '../email/emailActions'
+import { PatientFromResponse } from '@/interfaces/user'
 
 const BASE_URL = process.env.API_URL
 
@@ -142,11 +144,17 @@ export const loginTwoFactor = async (formData: FormData) => {
 export const sendCode = async (option: string) => {
   console.log('sendCodeType', option)
 
+  const cookieStore = cookies()
+  const userCookie = cookieStore.get('user')
+  if (!userCookie) {
+    throw new Error('User not found')
+  }
+  const user: PatientFromResponse = JSON.parse(userCookie.value)
+
   //se obtiene el usuario que se guardo en cookies
-  console.log('user')
+  console.log('user', user)
 
-  //se envia el codigo por sms o email
-
+  /* 
   if (option === 'phone') {
     return {
       success: 'Se envió el código de verificación a tu teléfono',
@@ -159,20 +167,14 @@ export const sendCode = async (option: string) => {
       success: 'Se envió el código de verificación a tu email',
       data: option,
     }
-  }
+  } */
 
   //se guarda el mail en una variable
-  const userEmail = 'user.email'
+  const userEmail = user.email
 
   //se envia una peticion al endpoint para que cree el codigo de verificacion
   //se obtiene ese codigo, se hashea y se guarda en cookies
-  const hashedCode = 'hashedCode'
-
-  const body = {
-    toUser: userEmail,
-    subject: 'Tu codigo de verificación',
-    message: hashedCode,
-  }
+  const hashedCode = '123456'
 
   if (!userEmail) {
     return {
@@ -181,16 +183,47 @@ export const sendCode = async (option: string) => {
     }
   }
 
-  return {
-    success: 'Se envió el código de verificación a tu correo',
-    data: body,
+  //se envia el codigo por email
+  try {
+    const sendMailResponse = await sendMail(
+      userEmail,
+      'Tu código de verificación',
+      hashedCode
+    )
+    console.log(sendMailResponse)
+
+    cookieStore.set('code', hashedCode, {
+      httpOnly: true,
+      path: '/',
+    })
+
+    return {
+      success: 'Se envió el código de verificación a tu correo',
+      data: sendMailResponse,
+    }
+  } catch (error) {
+    console.log(error)
+    throw new Error('Error al enviar el código de verificación')
   }
 }
 
 export const verifyCode = async (code: string) => {
-  console.log(code)
+  console.log(Number(code))
+
+  const cookieStore = cookies()
+  const codeCookie = cookieStore.get('code')
+  if (!codeCookie) {
+    throw new Error('Code not found')
+  }
+  const codeFromCookie = JSON.parse(codeCookie.value)
 
   //se verifica si el codigo es el mismo que el enviado
+  if (Number(code) !== codeFromCookie) {
+    return {
+      errors: 'Error al verificar el código',
+      message: 'El codigo no coincide con el enviado',
+    }
+  }
 
   return {
     success: 'Código verificado',

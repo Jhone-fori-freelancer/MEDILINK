@@ -1,7 +1,10 @@
 import { VerifyCode } from "@/ui/auth/LoginVerifyCode";
+import { Suspense } from "react";
 
 export default function VerifiedLogin() {
   return (
-    <VerifyCode />
+    <Suspense fallback={'Cargando ...'}>
+      <VerifyCode />
+    </Suspense>
   );
 }

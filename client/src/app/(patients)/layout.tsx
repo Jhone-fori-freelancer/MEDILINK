@@ -11,7 +11,7 @@ export default function LayoutDashboard({
     const userCookie = cookies().get('user');
     const user = userCookie ? JSON.parse(userCookie.value) : null;
 
-    if (user.rol !== 'PATIENT' && user.rol !== 'ADMIN') {
+    if (!user || (user.rol !== 'PATIENT' && user.rol !== 'ADMIN')) {
         redirect('/')
     }
     return (
