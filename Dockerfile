@@ -9,18 +9,12 @@ RUN npm run build
 # Etapa 2: Construcción del Backend (Spring Boot)
 FROM maven:3.8.5-openjdk-17 AS backend-builder
 WORKDIR /app
-
-# Copiar pom.xml primero para resolver dependencias
 COPY backend/pom.xml ./
 RUN mvn dependency:resolve
-
-# Copiar el código fuente del backend
 COPY backend/src ./src
-
-# Empaquetar el backend con pruebas deshabilitadas
 RUN mvn package -DskipTests
 
-# Etapa 3: Configuración del contenedor final
+# Etapa 3: Configuración del contenedor final con MySQL
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 
@@ -29,6 +23,15 @@ COPY --from=frontend-builder /app/build ./frontend
 
 # Copiar Backend compilado
 COPY --from=backend-builder /app/target/*.jar app.jar
+
+# Instalar MySQL
+RUN apt-get update && apt-get install -y mysql-server
+
+# Configurar MySQL
+RUN service mysql start && \
+    mysql -e "CREATE DATABASE mi_base_datos;" && \
+    mysql -e "CREATE USER 'mi_usuario'@'%' IDENTIFIED BY 'mi_contraseña';" && \
+    mysql -e "GRANT ALL PRIVILEGES ON mi_base_datos.* TO 'mi_usuario'@'%';"
 
 # Configuración para el backend
 ENV SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/mi_base_datos
@@ -39,8 +42,4 @@ ENV SPRING_DATASOURCE_PASSWORD=mi_contraseña
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
 # Exposición de puertos
-EXPOSE 8080 3000
-
-# Información de uso para MySQL
-# Puedes gestionar la base de datos MySQL por separado en Docker Compose
-# o instalarla como un servicio externo para persistencia más confiable
+EXPOSE 8080 3000 3306
