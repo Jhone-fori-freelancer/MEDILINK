@@ -9,16 +9,9 @@ RUN npm run build
 # Etapa 2: Construcción del Backend (Spring Boot)
 FROM maven:3.8.5-openjdk-17 AS backend-builder
 WORKDIR /app
-
-# Copiar pom.xml primero para resolver dependencias
 COPY backend/pom.xml ./
-RUN mvn dependency:resolve
-
-# Copiar el código fuente del backend
 COPY backend/src ./src
-
-# Empaquetar el backend con pruebas deshabilitadas
-RUN mvn package -DskipTests
+RUN mvn package
 
 # Etapa 3: Configuración del contenedor final
 FROM openjdk:17-jdk-slim
